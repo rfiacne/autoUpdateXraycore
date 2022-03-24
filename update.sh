@@ -114,7 +114,7 @@ installCronUpdate(){
 
 installScript(){
     mkdir ~/gobuild/
-    if [[ -f "~/update.sh"]]; then
+    if [[ -f "update.sh" ]]; then
         mv update.sh ~/gobuild/
     fi
 }
