@@ -112,7 +112,15 @@ installCronUpdate(){
     echoContent green "添加定时升级脚本成功!"
 }
 
+installScript(){
+    mkdir ~/gobuild/
+    if [[ -f ~/update.sh]]; then
+        mv update.sh ~/gobuild/
+    fi
+}
+
 main () {
+    installScript
     updateRepository
     updateDependents
     buildBinaries
