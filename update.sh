@@ -43,7 +43,7 @@ updateRepository(){
 updateBinaries(){
     cp -f xray.linux /etc/v2ray-agent/xray/xray
     chmod +x /etc/v2ray-agent/xray/xray
-    mv xray.* /usr/share/nginx/html/xray-core/
+    mv xray* /usr/share/nginx/html/xray-core/
     echoContent green "更新二进制成功！"
 }
 buildBinaries(){
