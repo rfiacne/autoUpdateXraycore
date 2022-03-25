@@ -32,36 +32,8 @@ echoContent() {
 }
 
 updateDependents(){
-    cat <<EOF >~/gobuild/go.mod.latest
-module github.com/xtls/xray-core
-go 1.18
-require (
-    github.com/ghodss/yaml latest
-    github.com/golang/mock latest
-    github.com/golang/protobuf latest
-    github.com/google/go-cmp latest
-    github.com/gorilla/websocket latest
-    github.com/lucas-clemente/quic-go latest
-    github.com/miekg/dns latest
-    github.com/pelletier/go-toml latest
-    github.com/pires/go-proxyproto latest
-    github.com/refraction-networking/utls latest
-    github.com/seiflotfy/cuckoofilter latest
-    github.com/stretchr/testify latest
-    github.com/xtls/go latest
-    go.starlark.net latest
-    golang.org/x/crypto latest
-    golang.org/x/net latest
-    golang.org/x/sync latest
-    golang.org/x/sys latest
-    google.golang.org/grpc latest
-    google.golang.org/protobuf latest
-    h12.io/socks latest
-    github.com/v2fly/ss-bloomring latest
-)
-EOF
-    cp -f ~/gobuild/go.mod.latest ~/gobuild/xray-core/go.mod
     cd ~/gobuild/xray-core/
+    go list -u -f '{{if (and (not (or .Main .Indirect)) .Update)}}{{.Path}}{{end}}' -m all | xargs go get -u
     go mod tidy
     echoContent green "更新依赖成功！"
 }
