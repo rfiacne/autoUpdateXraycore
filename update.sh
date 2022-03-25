@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+
 export LANG=en_US.UTF-8
+
 echoContent() {
 	case $1 in
 	# 红色
@@ -28,24 +30,31 @@ echoContent() {
 		;;
 	esac
 }
+
 updateDependents(){
     cp -f go.mod.latest ~/gobuild/xray-core/go.mod
     cd ~/gobuild/xray-core/
     go mod tidy
     echoContent green "更新依赖成功！"
 }
+
 updateRepository(){
     cd ~/gobuild/
     rm -rf xray-core
     git clone https://github.com/xtls/xray-core
     echoContent green "更新仓库成功！"
 }
+
 updateBinaries(){
+    if [[ ! -f "/usr/share/nginx/html/xray-core/" ]]; then
+        mkdir /usr/share/nginx/html/xray-core/
+    fi
     cp -f xray.linux /etc/v2ray-agent/xray/xray
     chmod +x /etc/v2ray-agent/xray/xray
     mv xray* /usr/share/nginx/html/xray-core/
     echoContent green "更新二进制成功！"
 }
+
 buildBinaries(){
     GOARCH=arm64 GOOS=darwin go build -a -o xray.mac -trimpath -ldflags "-s -w -buildid=" ./main
     if [[ -f "xray.mac" ]]; then
@@ -70,10 +79,12 @@ buildBinaries(){
         exit 0
     fi
 }
+
 reloadcore() {
     handleXray stop
     handleXray start
 }
+
 handleXray() {
 	if [[ -n $(find /bin /usr/bin -name "systemctl") ]] && [[ -n $(find /etc/systemd/system/ -name "xray.service") ]]; then
 		if [[ -z $(pgrep -f "xray/xray") ]] && [[ "$1" == "start" ]]; then
