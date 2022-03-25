@@ -46,9 +46,7 @@ updateRepository(){
 }
 
 updateBinaries(){
-    if [[ ! -f "/usr/share/nginx/html/xray-core/" ]]; then
-        mkdir /usr/share/nginx/html/xray-core/
-    fi
+    mkdir /usr/share/nginx/html/xray-core/
     cp -f xray.linux /etc/v2ray-agent/xray/xray
     chmod +x /etc/v2ray-agent/xray/xray
     mv xray* /usr/share/nginx/html/xray-core/
